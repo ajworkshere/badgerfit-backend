@@ -38,7 +38,7 @@ CORS(app)
 def uploaded_file(filename):
     return send_from_directory('.', filename)
 
-@app.route("/api/results")
+@app.route("/api/results", methods=['POST', 'OPTIONS'])
 def get_results():
     # Trigger the real AI engine on the current image
     actual_length = run_badger_scan('my_foot.jpg')
