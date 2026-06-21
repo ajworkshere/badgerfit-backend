@@ -1,0 +1,30 @@
+services:
+  # Backend: Flask API
+  - type: web
+    name: badger-fit-backend
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn web_app:app
+    envVars:
+      - key: PORT
+        value: 10000
+
+  # Frontend: Vite Static Site
+  - type: web
+    name: badger-fit-frontend
+    env: static
+    buildCommand: npm install && npm run build
+    publishDir: dist
+    headers:
+      - path: /*
+        name: Cache-Control
+        value: max-age=31536000
+    routes:
+      - type: rewrite
+        source: /api/*
+        destination: https://badger-fit-backend.onrender.com/api/*
+      - type: rewrite
+        source: /uploads/*
+        destination: https://badger-fit-backend.onrender.com/uploads/*
+      - type: fallback
+        destination: /index.html
