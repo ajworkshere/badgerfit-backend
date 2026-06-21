@@ -37,7 +37,7 @@ CORS(app)
 @app.route('/uploads/<filename>')
 def uploaded_file(filename):
     return send_from_directory('.', filename)
-
+    
 @app.route("/api/results", methods=['POST', 'OPTIONS'])
 def get_results():
     # Trigger the real AI engine on the current image
